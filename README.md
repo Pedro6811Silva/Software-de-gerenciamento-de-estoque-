@@ -1,8 +1,6 @@
 # Software-de-gerenciamento-de-estoque-
 
-# Sistema de Gestão de Estoque
-
-Este projeto é um software desenvolvido para auxiliar no controle de estoque, oferecendo funcionalidades de cadastro, movimentação e relatórios.
+Este projeto é um software desenvolvido para auxiliar no controle de estoque, oferecendo funcionalidades de cadastro, movimentação e relatórios feito em Html, Python, C++.
 
 ## Ilustração
 
@@ -16,6 +14,4 @@ Este projeto é um software desenvolvido para auxiliar no controle de estoque, o
 
 ## Como usar
 1. Clone este repositório
-2. Crie a pasta `images` e adicione sua captura de tela (ex: `estoque_dashboard.png`)
-3. Abra o projeto no Unity ou IDE correspondente
-4. Compile e execute para utilizar o sistema
+2. Crie a pasta qualquer coloque o arquivo dentro e execute-o no seu navegador padrão 
