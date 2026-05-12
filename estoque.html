@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Estoque</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+        th { background-color: #f4f4f4; }
+        input, button { margin: 5px; padding: 8px; }
+        .alerta { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>📦 Sistema de Estoque</h1>
+
+    <h3>Cadastrar Produto</h3>
+    <input type="text" id="nome" placeholder="Nome">
+    <input type="text" id="codigo" placeholder="Código">
+    <input type="number" id="quantidade" placeholder="Quantidade">
+    <input type="number" id="preco" placeholder="Preço">
+    <input type="date" id="validade">
+    <button onclick="adicionarProduto()">Adicionar</button>
+
+    <h3>Buscar Produto</h3>
+    <input type="text" id="busca" placeholder="Nome ou Código" onkeyup="buscarProduto()">
+
+    <table id="tabela">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Código</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Validade</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <h3>Resumo</h3>
+    <p id="resumo"></p>
+
+    <script>
+        let estoque = [];
+
+        function adicionarProduto() {
+            const nome = document.getElementById("nome").value;
+            const codigo = document.getElementById("codigo").value;
+            const quantidade = parseInt(document.getElementById("quantidade").value);
+            const preco = parseFloat(document.getElementById("preco").value);
+            const validade = document.getElementById("validade").value;
+
+            estoque.push({nome, codigo, quantidade, preco, validade});
+            atualizarTabela();
+        }
+
+        function atualizarTabela() {
+            const tbody = document.querySelector("#tabela tbody");
+            tbody.innerHTML = "";
+
+            estoque.forEach((item, index) => {
+                const tr = document.createElement("tr");
+
+                // alerta de validade
+                const hoje = new Date();
+                const validade = new Date(item.validade);
+                const alerta = validade < hoje ? "⚠️ Vencido" : "";
+
+                tr.innerHTML = `
+                    <td>${item.nome}</td>
+                    <td>${item.codigo}</td>
+                    <td>${item.quantidade}</td>
+                    <td>R$ ${item.preco.toFixed(2)}</td>
+                    <td>${item.validade} <span class="alerta">${alerta}</span></td>
+                    <td>
+                        <button onclick="removerProduto(${index})">Remover</button>
+                        <button onclick="entrada(${index})">Entrada</button>
+                        <button onclick="saida(${index})">Saída</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            atualizarResumo();
+        }
+
+        function removerProduto(index) {
+            estoque.splice(index, 1);
+            atualizarTabela();
+        }
+
+        function entrada(index) {
+            estoque[index].quantidade++;
+            atualizarTabela();
+        }
+
+        function saída(index) {
+            if (estoque[index].quantidade > 0) {
+                estoque[index].quantidade--;
+            }
+            atualizarTabela();
+        }
+
+        function buscarProduto() {
+            const termo = document.getElementById("busca").value.toLowerCase();
+            const tbody = document.querySelector("#tabela tbody");
+            tbody.innerHTML = "";
+
+            estoque.filter(item => 
+                item.nome.toLowerCase().includes(termo) || 
+                item.codigo.toLowerCase().includes(termo)
+            ).forEach((item, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${item.nome}</td>
+                    <td>${item.codigo}</td>
+                    <td>${item.quantidade}</td>
+                    <td>R$ ${item.preco.toFixed(2)}</td>
+                    <td>${item.validade}</td>
+                    <td>
+                        <button onclick="removerProduto(${index})">Remover</button>
+                        <button onclick="entrada(${index})">Entrada</button>
+                        <button onclick="saida(${index})">Saída</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function atualizarResumo() {
+            let totalItens = 0;
+            let valorTotal = 0;
+            estoque.forEach(item => {
+                totalItens += item.quantidade;
+                valorTotal += item.quantidade * item.preco;
+            });
+            document.getElementById("resumo").innerText = 
+                `Total de itens: ${totalItens} | Valor total em estoque: R$ ${valorTotal.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
