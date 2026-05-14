@@ -4,7 +4,7 @@ Este projeto é um software desenvolvido para auxiliar no controle de estoque, o
 
 ## Ilustração
 
-![Gestão de Estoque](./images/estoque_dashboard.png)
+![erro](ImagemEstoque/Captura de tela_13-5-2026_234754_.jpeg)
 
 ## Funcionalidades
 - Cadastro de produtos e categorias
